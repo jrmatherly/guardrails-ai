@@ -17,7 +17,10 @@ RUN guardrails configure \
     guardrails hub install hub://guardrails/toxic_language && \
     guardrails hub install hub://guardrails/nsfw_text && \
     guardrails hub install hub://guardrails/secrets_present && \
-    rm -f /root/.guardrailsrc
+    # Strip the token but keep runtime settings (use_remote_inferencing=false)
+    # Without this file, guardrails defaults to remote inference which requires a token
+    sed -i '/^token=/d' /root/.guardrailsrc && \
+    sed -i '/^id=/d' /root/.guardrailsrc
 
 # Copy guard configuration
 COPY config.py /app/config.py
