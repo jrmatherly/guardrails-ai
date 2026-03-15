@@ -24,4 +24,5 @@ COPY config.py /app/config.py
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "90", "--workers", "2", "--threads", "4", "guardrails_api.app:create_app(None, 'config.py')"]
+# uvicorn with --factory flag calls create_app() which auto-loads ./config.py from cwd
+CMD ["uvicorn", "guardrails_api.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--timeout-keep-alive", "20"]
