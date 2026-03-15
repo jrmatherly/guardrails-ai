@@ -16,7 +16,7 @@ RUN guardrails configure \
       --disable-remote-inferencing && \
     guardrails hub install hub://guardrails/toxic_language && \
     guardrails hub install hub://guardrails/nsfw_text && \
-    guardrails hub install hub://guardrails/detect_secrets && \
+    guardrails hub install hub://guardrails/secrets_present && \
     rm -f /root/.guardrailsrc
 
 # Copy guard configuration

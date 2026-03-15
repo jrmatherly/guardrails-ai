@@ -1,5 +1,5 @@
 from guardrails import Guard
-from guardrails.hub import ToxicLanguage, NSFWText, DetectSecrets
+from guardrails.hub import ToxicLanguage, NSFWText, SecretsPresent
 
 toxic_language_guard = Guard(
     name="toxic-language-guard",
@@ -14,4 +14,4 @@ nsfw_content_guard = Guard(
 detect_secrets_guard = Guard(
     name="detect-secrets-guard",
     description="Detects API keys, tokens, passwords, and other secrets"
-).use(DetectSecrets())
+).use(SecretsPresent())
