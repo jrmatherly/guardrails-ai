@@ -7,12 +7,11 @@ WORKDIR /app
 RUN pip install --no-cache-dir "guardrails-ai[api]"
 
 # Install hub validators using BuildKit secret mount
-# Write the config file directly (bypasses interactive `guardrails configure`)
-# The secret mount is ephemeral — token is NOT baked into image layers
+# Write config as simple key=value (no INI section headers)
+# The secret mount is ephemeral — token is NOT in final image layers
 RUN --mount=type=secret,id=guardrails_token \
     mkdir -p /root && \
-    echo "[guardrails]" > /root/.guardrailsrc && \
-    echo "token=$(cat /run/secrets/guardrails_token)" >> /root/.guardrailsrc && \
+    echo "token=$(cat /run/secrets/guardrails_token)" > /root/.guardrailsrc && \
     echo "use_remote_inferencing=false" >> /root/.guardrailsrc && \
     echo "enable_metrics=false" >> /root/.guardrailsrc && \
     guardrails hub install hub://guardrails/toxic_language && \
