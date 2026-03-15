@@ -39,9 +39,6 @@ jobs:
             type=sha
             type=raw,value=latest
 
-      - name: Write Guardrails Hub token
-        run: echo "${{ secrets.GUARDRAILS_TOKEN }}" > /tmp/guardrails-token.txt
-
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -49,11 +46,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets: |
-            guardrails_token=/tmp/guardrails-token.txt
+          build-args: |
+            GUARDRAILS_TOKEN=${{ secrets.GUARDRAILS_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Clean up token
-        if: always()
-        run: rm -f /tmp/guardrails-token.txt
